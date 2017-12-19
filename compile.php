@@ -1,3 +1,4 @@
+<?php
 $delimiter = "::";
 $eol = ";";
 $var = '$';
@@ -17,9 +18,16 @@ function errorHandle($type,$critical,$line,$near) {
 $tag_e = str_replace("/","\/",$tag);
 $etag_e = str_replace("/","\/",$etag);
 
-$file = '<ct>body::"Be gone ,$trangevar"; title::"Hello, $tranger";</ct>';
+if (isset($argv[1])) {
+	$file = file_get_contents($argv[1]);
+} else {
+	echo "No File Specified, Please Use 'PHP compile.php <script to compile> <output file>'";
+	throw new exception("No File!!!");
+}
 
 preg_match("/$tag_e.*$etag_e/i",$file,$matches);
+
+if (sizeof($matches) > 0) {
 
 $code = $matches[0];
 
@@ -37,8 +45,8 @@ $commandLookup = [
 $i = 0;
 foreach ($commands as $comm) {
   $i++;
-  if (strpos($comm, "::") !== false) {
-    $commsplit = explode("::",$comm);
+  if (strpos($comm, $delimiter) !== false) {
+    $commsplit = explode($delimiter,$comm);
     $commsplit[0] = str_replace(" ","",$commsplit[0]);
     $commsplit[1] = str_replace("'","",$commsplit[1]);
     $commsplit[1] = str_replace("\"","",$commsplit[1]);
@@ -62,4 +70,18 @@ foreach ($commands as $comm) {
 }
 }
 
-echo $print;
+if (isset($argv[2])) {
+	$putfile = $argv[2];
+} else {
+	$putfile = "compiled-MYOL.php";
+}
+
+file_put_contents($putfile,$print);
+
+$ver = file_get_contents("version");
+
+echo "\nCongrats, Your Code Compiled Successfully!\n";
+echo "Compiler: MYOL-PHP: $ver\n";
+} else {
+	echo "\nNo code to compile!";
+}

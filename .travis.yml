@@ -4,3 +4,4 @@ php:
   - '7.1'
   - hhvm # on Trusty only
   - nightly
+  script: "PHP compile.php example.php output.php"

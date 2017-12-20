@@ -16,8 +16,6 @@ install:
 
 script:
 - mkdir -p build/logs
-- php vendor/bin/phpunit -c phpunit.xml.dist
-- phpunit --coverage-clover build/logs/clover.xml compile.php tests/CompileTest.php
 - php compile.php example.php output.php
 
 after_success:

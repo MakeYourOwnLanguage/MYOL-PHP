@@ -9,12 +9,16 @@ before_install:
 - wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.0.0/php-coveralls.phar
 - chmod +x php-coveralls.phar
 - composer require php-coveralls/php-coveralls
- 
+
+install:
+  - curl -s http://getcomposer.org/installer | php
+  - php composer.phar install --dev --no-interaction
+
 script:
-- phpunit --coverage-clover build/logs/clover.xml UnitTest compile.php
+- mkdir -p build/logs
+- php vendor/bin/phpunit -c phpunit.xml.dist
+- phpunit --coverage-clover build/logs/clover.xml UnitTest compile.php tests/CompileTest.php
 - php compile.php example.php output.php
 
 after_success:
-  - travis_retry php vendor/bin/php-coveralls
-  # or enable logging
   - travis_retry php vendor/bin/php-coveralls -v

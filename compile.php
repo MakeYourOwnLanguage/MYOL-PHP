@@ -21,8 +21,7 @@ $etag_e = str_replace("/","\/",$etag);
 if (isset($argv[1])) {
 	$file = file_get_contents($argv[1]);
 } else {
-	echo "No File Specified, Please Use 'PHP compile.php <script to compile> <output file>'";
-	throw new exception("No File!!!");
+	$file = file_get_contents("compile.php");
 }
 
 preg_match("/$tag_e.*$etag_e/i",$file,$matches);
